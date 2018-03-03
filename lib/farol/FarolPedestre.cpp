@@ -29,6 +29,7 @@ void FarolPedestre::mudar_estado(){
 }
 
 void FarolPedestre::mudar_estado(Estado e){
+
         switch (e) {
         case verde:
                 estado = vermelho;
@@ -40,6 +41,8 @@ void FarolPedestre::mudar_estado(Estado e){
                 estado = verde;
                 break;
         }
+        Serial.println(e);
+        Serial.println(estadoToString());
 
 
 
@@ -47,12 +50,14 @@ void FarolPedestre::mudar_estado(Estado e){
 
 void FarolPedestre::piscar_vermelho(){
 
+
         if(estado == verde) {
                 digitalWrite(input_verde, HIGH);
-                unsigned long tf = millis() + get_intervalo() / 2;
+                unsigned long dt = get_intervalo() * 0.7;
+                unsigned long tf = millis() + dt;
 
                 while(tf > millis()) {
-                        if(tf - millis() < get_intervalo() * 0.5) {
+                        if(tf - millis() < dt * 0.5) {
                                 digitalWrite(input_verde, LOW);
                                 digitalWrite(input_vermelho, HIGH);
                                 delay(get_intervalo() * 0.1);
@@ -68,6 +73,7 @@ void FarolPedestre::piscar_vermelho(){
 
 
 void FarolPedestre::mudar_luz(){
+
         switch (estado) {
 
         case vermelho:

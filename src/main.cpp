@@ -66,7 +66,7 @@ void TaskFarolBotao(void *pvParameters)
 
         while(1) {
 
-                if(xQueueReceive(queue, &estadoatualFarol, portMAX_DELAY) == pdPASS) {
+                if(xQueueReceive(queue_b, &estadoatualFarol, portMAX_DELAY) == pdPASS) {
                 }
 
                 if(estadoatualFarol != verde) {
@@ -82,10 +82,7 @@ void TaskFarolBotao(void *pvParameters)
                         }else{
                                 reduzir_tempo = 0;
                         }
-
-
                 }
-
                 if(xQueueSend(queue_bs, &reduzir_tempo, 1) != pdPASS) {
                 }
         }
@@ -104,6 +101,12 @@ void TaskFarol(void *pvParameters)
         unsigned long ti=0;
         int i=0;
 
+        estadoatual = farol.get_estado();
+
+        if(xQueueSend(queue, &estadoatual, 1) != pdPASS) {
+
+        }
+
         while(1) {
 
                 farol.mudar_luz();
@@ -117,7 +120,8 @@ void TaskFarol(void *pvParameters)
                   farol.reduzir_intervalo();
                 }
 
-                if(xQueueSend(queue, &estadoatual, 1) != pdPASS) {
+
+                if(xQueueSend(queue_b, &estadoatual, 1) != pdPASS) {
 
                 }
 
@@ -125,12 +129,18 @@ void TaskFarol(void *pvParameters)
 
 
                 if(mudar == true){
+
                   mudar = false;
                   i=0;
                   farol.mudar_estado();
                   farol.mudar_luz();
-                  Serial.print("RT: ");
-                  Serial.println(reduzir_tempo);
+                  estadoatual = farol.get_estado();
+                  if(xQueueSend(queue, &estadoatual, 1) != pdPASS) {
+
+                  }
+
+
+
                 }
 
         }
@@ -146,15 +156,14 @@ void TaskFarolPedestre(void *pvParameters)
 
         while(1) {
                 if(xQueueReceive(queue, &estadoatualFarol, portMAX_DELAY) == pdPASS) {
-
-                        farol_pedestre.mudar_estado(estadoatualFarol);
-                        farol_pedestre.mudar_luz();
-                        farol_pedestre.piscar_vermelho();
-
-                }else{
-                        Serial.println("Erro ao receber mesangem Pedestre");
-                        farol_pedestre.mudar_estado(vermelho);
                 }
+
+                Serial.print("Semaforo: ");
+                Serial.println(estadoatualFarol);
+
+                farol_pedestre.mudar_estado(estadoatualFarol);
+                farol_pedestre.mudar_luz();
+                farol_pedestre.piscar_vermelho();
 
         }
 }

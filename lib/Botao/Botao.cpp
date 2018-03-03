@@ -33,8 +33,7 @@ bool Botao::pressionado(){
 
         estado_botao = digitalRead(input_botao);
         delay(ATRASODELEITURA);
-        Serial.print("Bt: ");
-        Serial.println(estado_botao);
+
         if(estado_botao == LOW) {
                 return false;
         }

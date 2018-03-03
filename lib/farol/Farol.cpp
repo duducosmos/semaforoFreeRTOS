@@ -14,7 +14,7 @@ Farol::Farol(int input_verde, int input_amarelo, int input_vermelho)
         numero_lampadas = 3;
         tempo_atual = millis();
         intervalo = MAXTINTERVALO;
-        estado = verde;
+        estado = vermelho;
         pinMode(input_verde, OUTPUT);
         pinMode(input_amarelo, OUTPUT);
         pinMode(input_vermelho, OUTPUT);
@@ -88,8 +88,8 @@ bool Farol::fdelay(unsigned long & ti, int & i){
 
         unsigned long t = ti;
         if(i<= n) {
-                if(t + i * dt <= millis()){
-                  i++;
+                if(t + i * dt <= millis()) {
+                        i++;
                 }
 
         }
@@ -101,21 +101,8 @@ bool Farol::fdelay(unsigned long & ti, int & i){
 
 }
 void Farol::_delay(){
-        int n = 4;
-        unsigned long ti = millis();
-        unsigned long tf = ti + intervalo;
-        unsigned long dt = (tf - ti) / n;
-
-        unsigned long t = ti;
-        for(int i=0; i<= n; i++) {
-                if(tf >= millis()) {
-                        while(t + i * dt >= millis()) ;
-
-                }
-
-        }
-
-
+        unsigned long tf = millis() + intervalo;
+        while(tf >= millis());
 }
 
 
