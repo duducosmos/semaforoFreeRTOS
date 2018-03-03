@@ -1,9 +1,21 @@
 /*
- * Aplicativo das Luzes do Semaforo
- * Developed by: Eduardo S. Pereira
- * Date: 28/02/2018
- * Version: 0.0.1
- */
+Author: Eduardo S. Pereira.
+Versio: 0.0.1
+Date: 03/03/2018
+
+This file is part of SemaforofreeRTOS.
+copyright : Eduardo dos Santos Pereira
+pystar is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License.
+pystar is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
 
  #include <Farol.h>
 
@@ -135,7 +147,7 @@ void Farol::mudar_estado(){
 void Farol::mudar_luz(){
         switch (estado) {
         case amarelo:
-                intervalo = MAXTINTERVALO / 2;
+                intervalo = MAXTINTERVALO / 10;
                 digitalWrite(input_verde, LOW);
                 digitalWrite(input_amarelo, HIGH);
                 digitalWrite(input_vermelho, LOW);
